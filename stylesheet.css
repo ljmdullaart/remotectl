@@ -1,0 +1,30 @@
+h1,h2,h3,h4 {
+    font-family:"arial";
+}
+.toc {
+    font-family:"Times";
+}
+p {
+    font-family:"Times";
+}
+.lst {
+    font-family:"Courier New";
+}
+.fixed {
+    font-family:"Courier New";
+}
+table.table {
+}
+td.table {
+}
+.cell {
+}
+table.paragraph {
+}
+td.leftnote{
+}
+td.paragraph {
+    font-family:"Times";
+}
+.list {
+}

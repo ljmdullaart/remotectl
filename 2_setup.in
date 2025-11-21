@@ -1,0 +1,45 @@
+.header
+
+.h2 Setup
+
+Install the LIRCD-package. Although we're note using the
+.fixed lircd,
+the package contains some support programs etc. that we will be using.
+
+.pre
+sudo apt install lircd
+.pre
+
+Next, make sure that the receiver and sender devices are available. For 
+the Anavi pHAT, that means you'll need the add the following lines to
+.fixed /boot/firmware/config.txt
+
+.pre
+#LIRC
+dtoverlay=gpio-ir-tx,gpio_pin=17
+dtoverlay=gpio-ir,gpio_pin=18
+.pre
+
+and reboot.
+
+Next start the server.
+
+.pre
+perl server.pl
+.pre
+
+At this point, there are no remotes available.
+When you have cloned a remote, it will be available under
+.i servername:3000/remotename.html.
+You might restart if the server crashes like:
+
+.pre
+while : ; do
+    perl server.pl
+done
+.pre
+
+or even use
+.fixed systemd
+to restart it again.
+

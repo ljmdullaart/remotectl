@@ -1,0 +1,190 @@
+
+
+.img HALF remote.jpg
+
+.h1 Intro
+
+Remotectl is a set of scripts that allow the cloning of multiple 
+remote controls on a single Raspberry Pi with Anavi IR pHAT. 
+The scripts use the raw receive and send from the
+.fixed lircd
+so it should work with other IR receivers/transmitters as well.
+
+The server is meant to run on a closed network and has no security
+at all. 
+
+
+.h2 Setup
+
+Install the LIRCD-package. Although we're note using the
+.fixed lircd,
+the package contains some support programs etc. that we will be using.
+
+.pre
+sudo apt install lircd
+.pre
+
+Next, make sure that the receiver and sender devices are available. For 
+the Anavi pHAT, that means you'll need the add the following lines to
+.fixed /boot/firmware/config.txt
+
+.pre
+#LIRC
+dtoverlay=gpio-ir-tx,gpio_pin=17
+dtoverlay=gpio-ir,gpio_pin=18
+.pre
+
+and reboot.
+
+Next start the server.
+
+.pre
+perl server.pl
+.pre
+
+At this point, there are no remotes available.
+When you have cloned a remote, it will be available under
+.i servername:3000/remotename.html.
+You might restart if the server crashes like:
+
+.pre
+while : ; do
+    perl server.pl
+done
+.pre
+
+or even use
+.fixed systemd
+to restart it again.
+
+
+
+.h1 Cloning a remote
+
+There are three steps in cloning a remote:
+
+- create a keys file
+- record the codes from the remote
+- make available
+
+.h2 The keys file
+
+The keys file is a description of the remote, the physical 
+lay-out of the keys. The filename must have the extension
+.fixed keys.
+Each line contains a name of a key or
+a formatting command for the web page.
+An example:
+
+.pre
+ power
+ av
+ -> tv__power_
+ ===
+ rewind
+ play
+ pause
+ forward
+ ---
+ previous
+ stop
+ record
+ next
+.pre
+
+For the recording, only the name of the keys are used. In this case that would be power, av
+rewind, play, pause, forward
+previous, stop, record and next.
+
+The formatting lines are used when a webpage is generated for this remote. Formatting lines can be:
+
+|--------------------------------------------------------------------------------------------------------------------------------|
+| command  | example        | meaning                                                                                            |
+|--------------------------------------------------------------------------------------------------------------------------------|
+| ->       | -> tv__power_  | Use a bitton that belongs to another remot control; here: the "power" button from the remote "tv"  |
+|--------------------------------------------------------------------------------------------------------------------------------|
+| ===      | ===            | The next row may have a different number of buttons                                                |
+|--------------------------------------------------------------------------------------------------------------------------------|
+| .eqn --- | .eqn ---       | Start a new row with the same number of buttons                                                    |
+|--------------------------------------------------------------------------------------------------------------------------------|
+| #        | # volume       | Use this text instead of a button; a single # on a line gives an empty space                       |
+|--------------------------------------------------------------------------------------------------------------------------------|
+| ##       | ## Amino       | Print this text over the full width of the remote                                                  |
+|--------------------------------------------------------------------------------------------------------------------------------|
+
+When generating the web page, certain key names will be replaced by a symbol:
+
+	blue	■
+	channeldown	⇓
+	chan_down	⇓
+	channelup	⇑
+	chan_up	⇑
+	circle	◯
+	down	▼
+	forward	▶▶
+	green	■
+	left	◀
+	next	⇥
+	pause	‖
+	play	▶
+	previous	⇤
+	rec	◉
+	record	◉
+	red	■
+	rewind	◀◀
+	right	▶
+	scanback	◀◀
+	scanforward	▶▶
+	skipback	⇤
+	skipforward	⇥
+	stop	■
+	up	▲
+	volumedown	▼
+	volume_down	▼
+	volumeup	▲
+	volume_up	▲
+	yellow	■
+
+.h2 Recording the remote
+
+The script
+.fixed record_ir_auto.sh
+records the keys from the remote.
+The argument is the name of the remote. So:
+
+.pre
+bash record_ir_auto.sh amino
+.pre
+
+will record the keys for the amino remote control. The script will look for
+.fixed amino.keys
+in the current directory, and will create a file per button
+.fixed amino__power_.ir, amino__av_.ir
+and so on in the current directory.
+
+Be carefull with ambient light. Ideal would be to have a dark surrounding. 
+
+The script gives a lot of feedback. It should be clear  if the recording
+is successful. If things go wrong, just restart. 
+
+.h2 Make available
+
+The files with the data about the keys must be in a sub-directory 
+.fixed ir
+of the server directory.
+
+.pre
+mkdir -p ir
+mv *.ir ir
+.pre
+
+Next, generate an HTML-file. The key file is used for this as well.
+
+.pre
+make_html.bash amino
+.pre
+
+will make a web page
+.fixed amino.html
+with a basic set-up for the remote. If you want to change the layout, add 
+texts you can do so.

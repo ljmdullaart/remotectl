@@ -1,0 +1,14 @@
+.header
+
+.img HALF remote.jpg
+
+.h1 Intro
+
+Remotectl is a set of scripts that allow the cloning of multiple 
+remote controls on a single Raspberry Pi with Anavi IR pHAT. 
+The scripts use the raw receive and send from the
+.fixed lircd
+so it should work with other IR receivers/transmitters as well.
+
+The server is meant to run on a closed network and has no security
+at all. 
