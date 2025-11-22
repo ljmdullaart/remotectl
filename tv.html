@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>IR Remote Control</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="scripts-section">
+            <h2>Philips TV</h2>
+            <table class="remote-table">
+                <tr>
+                    <td><button class="ir-button" id="input" onclick="sendCommand('tv__power_')">TV power</button></td>
+                </tr>
+	    </table>
+            <table class="remote-table">
+                <tr>
+                    <td><button class="ir-button" id="power" onclick="sendCommand('tv__source_')">source</button></td>
+		    <td><button class="ir-button" id="input" onclick="sendCommand('tv__left_')"><div style="font-size:x-large;">&#x25c0;</div></button></td>
+                    <td><button class="ir-button" id="input" onclick="sendCommand('tv__ok_')">select</button></td>
+		    <td><button class="ir-button" id="input" onclick="sendCommand('tv__right_')"><div style="font-size:x-large;">&#x25b6;</div></button></td>
+                </tr>
+	    </table>
+            <table class="remote-table">
+                <tr>
+                    <td></td>
+                    <td><button class="ir-button" id="input" onclick="sendCommand('tv__home_')">&Vert;</button></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><button class="ir-button" id="list" onclick="sendCommand('tv__list_')">list</button></td>
+		    <td><button class="ir-button" id="input" onclick="sendCommand('tv__up_')"><div style="font-size:xx-large;">&#x25b2;</div></button></td>
+                    <td><button class="ir-button" id="input" onclick="sendCommand('tv__info_')">info</button></td>
+                </tr>
+                <tr>
+			<td><button class="ir-button" id="input" onclick="sendCommand('tv__left_')"><div style="font-size:x-large;">&#x25c0;</div></button></td>
+			<td><button class="ir-button" id="input" onclick="sendCommand('tv__ok_')">OK</button></td>
+			<td><button class="ir-button" id="input" onclick="sendCommand('tv__right_')"><div style="font-size:x-large;">&#x25b6;</div></button></td>
+                </tr>
+                <tr>
+			<td><button class="ir-button" id="input" onclick="sendCommand('tv__format_')">size</button></td>
+			<td><button class="ir-button" id="input" onclick="sendCommand('tv__down_')"><div style="font-size:xx-large;">&#x25bc;</div></button></td>
+			<td><button class="ir-button" id="input" onclick="sendCommand('tv__options_')">opt</td>
+                </tr>
+	    </table>
+            <table class="remote-table">
+                <tr>
+                    <td><button class="ir-button" id="input" onclick="sendCommand('tv__volume_down_')">-</button></td>
+                    <td>Volume</td>
+                    <td><button class="ir-button" id="input" onclick="sendCommand('tv__volume_up_')">+</button></td>
+                </tr>
+	    </table>
+	    <h2>Amino</h2>
+            <table class="remote-table">
+                <tr>
+                    <td><button class="ir-button" id="input" onclick="sendCommand('amino__chan_down_')">-</button></td>
+                    <td>Channel</td>
+                    <td><button class="ir-button" id="input" onclick="sendCommand('amino__chan_up_')">+</button></td>
+                </tr>
+	    </table>
+        </div>
+
+        <div class="output-section">
+            <h2>Output</h2>
+            <div id="output" class="output-box">
+                <p class="placeholder">Command output will appear here...</p>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./script.js"></script>
+</body>
+
+</html>
